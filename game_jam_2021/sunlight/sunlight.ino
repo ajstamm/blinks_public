@@ -7,6 +7,9 @@ byte sunID = false; // am a sun
 byte oceanID = false; // am an ocean
 byte plantDim = 0;
 byte flowerDim = 0;
+// #define dawn 5000;
+// #define dusk 5000;
+// Timer sunTimer;
 
 
 // modified from https://github.com/Move38/Simulations/blob/master/ForestFire/ForestFire.ino
@@ -31,6 +34,7 @@ void loop() {
   if (buttonSingleClicked()) {
     sunID = true;
     sunDim = 15;
+//    sunTimer.set(dawn);
   }
   if (buttonDoubleClicked()) {
     oceanID = true;
@@ -39,6 +43,8 @@ void loop() {
 
   if (!sunID) {
     sunDim = (sunDim + getSunLevels()) / 1.5;
+  } else {
+    sunDim = (((sunDim + 1) * 16) + sin8_C(millis()) / 256) / 16 - 1;
   }
   if (!oceanID) {
     oceanDim = (oceanDim + getOceanLevels()) / 1.5;
@@ -52,10 +58,20 @@ void loop() {
   if (sunDim > 7 & oceanDim > 1 & plantDim < 255) {
     plantDim = plantDim + 5;
   }
-  if (sunDim > 7 & oceanDim > 1 & plantDim > 250) {
+  if (sunDim > 7 & oceanDim > 1 & plantDim > 250 & flowerDim < 250) {
     flowerDim = flowerDim + 5;
   }
+  if (sunDim < 8 & oceanDim > 1 & plantDim > 50 & flowerDim == 0) {
+    plantDim = plantDim - 5;
+  }
+  if (sunDim < 8 & oceanDim > 1 & flowerDim > 0) {
+    flowerDim = flowerDim - 5;
+  }
   displayLoop();
+  
+}
+
+byte sunSet() {
   
 }
 
@@ -69,11 +85,8 @@ byte getSunLevels() {
       sunDim = sunDim + getSun(getLastValueReceivedOnFace(f));
       denom = denom + 1;
     }
-    // sunLevels[f] = getLastValueReceivedOnFace(f);
-    // sunDim = sunDim + sunLevels[f];
   }
   sunDim = sunDim / denom;
-  // sunDim = sunDim * 32; // convert back to hex
   return sunDim;
 }
 
@@ -85,11 +98,8 @@ byte getOceanLevels() {
       oceanDim = oceanDim + getOcean(getLastValueReceivedOnFace(f));
       denom = denom + 1;
     }
-    // sunLevels[f] = getLastValueReceivedOnFace(f);
-    // sunDim = sunDim + sunLevels[f];
   }
   oceanDim = oceanDim / denom;
-  // sunDim = sunDim * 32; // convert back to hex
   return oceanDim;
 }
 
