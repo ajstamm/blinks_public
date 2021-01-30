@@ -7,7 +7,7 @@ byte sunID = false; // am a sun
 byte oceanID = false; // am an ocean
 byte plantDim = 0;
 byte flowerDim = 0;
-#define DAY_LENGTH 10000
+#define DAY_LENGTH 2000
 
 // store dimness level 16 sun, 4 water
 // byte sendData = (sunDim << 4) + (oceanDim);
@@ -71,29 +71,29 @@ byte sunSet() {
 
 
 byte getSunLevels() {
-  sunDim = 0;
+  byte sunNeighbor = 0;
   byte denom = 0;
   FOREACH_FACE(f) {
     if (!isValueReceivedOnFaceExpired(f)) { // is there a neighbor?
-      sunDim = sunDim + getSun(getLastValueReceivedOnFace(f));
+      sunNeighbor = sunNeighbor + getSun(getLastValueReceivedOnFace(f));
       denom = denom + 1;
     }
   }
-  sunDim = sunDim / denom;
-  return sunDim;
+  sunNeighbor = sunNeighbor / denom;
+  return sunNeighbor;
 }
 
 byte getOceanLevels() {
-  oceanDim = 0;
+  byte oceanNeighbor = 0;
   byte denom = 0;
   FOREACH_FACE(f) {
     if (!isValueReceivedOnFaceExpired(f)) { // is there a neighbor?
-      oceanDim = oceanDim + getOcean(getLastValueReceivedOnFace(f));
+      oceanNeighbor = oceanNeighbor + getOcean(getLastValueReceivedOnFace(f));
       denom = denom + 1;
     }
   }
-  oceanDim = oceanDim / denom;
-  return oceanDim;
+  oceanNeighbor = oceanNeighbor / denom;
+  return oceanNeighbor;
 }
 
 byte getOcean(byte data) {
