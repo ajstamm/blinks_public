@@ -7,25 +7,16 @@ byte sunID = false; // am a sun
 byte oceanID = false; // am an ocean
 byte plantDim = 0;
 byte flowerDim = 0;
-byte dayLength = 10000;
-// #define dawn 5000;
-// #define dusk 5000;
-// Timer sunTimer;
+#define DAY_LENGTH 10000
 
-
-// modified from https://github.com/Move38/Simulations/blob/master/ForestFire/ForestFire.ino
-// byte sunLevels[6] = {0, 0, 0, 0, 0, 0}; // my sunlight level
-// byte sendData = (signalState << 2) + (gameMode);
-// << 2 means push data 2 digits before concatenating
-// & 3 gives the last 3 digits
+// store dimness level 16 sun, 4 water
 // byte sendData = (sunDim << 4) + (oceanDim);
-// 
+// << 2 means push data 2 digits before concatenating
+// & 3 gives the last 2 digits
 
-// store dimness level 0 to 7 
-// or 16 sun, 4 water
 
-// could add timer for sun and maybe water
-// later tie water to be dependent on sun?
+// could add timer for sun
+// tie water to be dependent on sun?
 
 void setup() {
 }
@@ -44,9 +35,9 @@ void loop() {
   if (!sunID) {
     sunDim = (sunDim + getSunLevels()) / 2;
   } else {
-    int pulseProgress = millis() % dayLength;
-    byte pulseMapped = map(pulseProgress, 0, dayLength, 0, 15);
-    sunDim = sin8_C(pulseMapped);
+    int pulseProgress = millis() % DAY_LENGTH;
+    byte pulseMapped = map(pulseProgress, 0, DAY_LENGTH, 0, 255);
+    sunDim = map(sin8_C(pulseMapped), 0, 255, 0, 15);
   }
   if (!oceanID) {
     oceanDim = (oceanDim + getOceanLevels()) / 2;
@@ -106,11 +97,11 @@ byte getOceanLevels() {
 }
 
 byte getOcean(byte data) {
-    return (data & 3);//returns bits C and D
+    return (data & 3);//returns bits 5 and 6
 }
 
 byte getSun(byte data) {
-    return ((data >> 4) & 15);//returns bits C and D
+    return ((data >> 4) & 15);//returns bits 1 to 4
 }
 
 void displayLoop() {
