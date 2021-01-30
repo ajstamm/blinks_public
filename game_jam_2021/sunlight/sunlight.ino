@@ -7,6 +7,7 @@ byte sunID = false; // am a sun
 byte oceanID = false; // am an ocean
 byte plantDim = 0;
 byte flowerDim = 0;
+byte dayLength = 10000;
 // #define dawn 5000;
 // #define dusk 5000;
 // Timer sunTimer;
@@ -34,7 +35,6 @@ void loop() {
   if (buttonSingleClicked()) {
     sunID = true;
     sunDim = 15;
-//    sunTimer.set(dawn);
   }
   if (buttonDoubleClicked()) {
     oceanID = true;
@@ -42,12 +42,14 @@ void loop() {
   }
 
   if (!sunID) {
-    sunDim = (sunDim + getSunLevels()) / 1.5;
+    sunDim = (sunDim + getSunLevels()) / 2;
   } else {
-    sunDim = (((sunDim + 1) * 16) + sin8_C(millis()) / 256) / 16 - 1;
+    int pulseProgress = millis() % dayLength;
+    byte pulseMapped = map(pulseProgress, 0, dayLength, 0, 15);
+    sunDim = sin8_C(pulseMapped);
   }
   if (!oceanID) {
-    oceanDim = (oceanDim + getOceanLevels()) / 1.5;
+    oceanDim = (oceanDim + getOceanLevels()) / 2;
   }
   FOREACH_FACE(f) {
     if (!isValueReceivedOnFaceExpired(f)) { // is there a neighbor?
