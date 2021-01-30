@@ -2,7 +2,8 @@
  */
 
 byte sunDim = 0; // my brightness
-byte sunLevel[6] = {0, 0, 0, 0, 0, 0}; // my sunlight level
+// modified from https://github.com/Move38/Simulations/blob/master/ForestFire/ForestFire.ino
+byte sunLevels[6] = {0, 0, 0, 0, 0, 0}; // my sunlight level
 byte sunID = false; // am a sun
 
 void setup() {
@@ -20,17 +21,16 @@ void loop() {
   }
   setColor(dim(YELLOW, sunDim));
   FOREACH_FACE(f) {
-    // byte sendData = (blinkRole << 4) + (tradingSignals[f] << 2) + (celebrationState);
-    sunLevel[f] = sunDim / 4;
-    setValueSentOnFace(sunLevel[f], f);
+    sunLevels[f] = sunDim / 10;
+    setValueSentOnFace(sunLevels[f], f);
   }
 }
 
 byte getSunLevels() {
   sunDim = 0;
   FOREACH_FACE(f) {
-    byte neighbor = sunLevel[f];
-    sunDim = sunDim + neighbor;
+    sunLevels[f] = getLastValueReceivedOnFace(f);
+    sunDim = sunDim + sunLevels[f];
   }
   sunDim = sunDim * 4; // convert back to hex
   return sunDim;
