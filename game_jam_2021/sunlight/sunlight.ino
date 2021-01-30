@@ -17,11 +17,11 @@ void loop() {
     sunDim = 255;
   }
   if (!sunID) {
-    sunDim = (sunDim + getSunLevels()) / 2;
+    sunDim = (sunDim + getSunLevels()) / 6;
   }
   setColor(dim(YELLOW, sunDim));
   FOREACH_FACE(f) {
-    sunLevels[f] = sunDim / 10;
+    sunLevels[f] = sunDim / 4;
     setValueSentOnFace(sunLevels[f], f);
   }
 }
