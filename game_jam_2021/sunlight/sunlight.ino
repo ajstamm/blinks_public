@@ -5,6 +5,8 @@ byte sunDim = 0; // sun brightness
 byte oceanDim = 0; // ocean brightness
 byte sunID = false; // am a sun
 byte oceanID = false; // am an ocean
+byte plantDim = 0;
+byte flowerDim = 0;
 
 
 // modified from https://github.com/Move38/Simulations/blob/master/ForestFire/ForestFire.ino
@@ -35,18 +37,29 @@ void loop() {
     oceanDim = 3;
   }
 
-  if (!sunID & !oceanID) {
-    sunDim = (sunDim + getSunLevels()) / 2;
-    oceanDim = (oceanDim + getOceanLevels()) / 2;
+  if (!sunID) {
+    sunDim = (sunDim + getSunLevels()) / 1.5;
+  }
+  if (!oceanID) {
+    oceanDim = (oceanDim + getOceanLevels()) / 1.5;
   }
   FOREACH_FACE(f) {
     if (!isValueReceivedOnFaceExpired(f)) { // is there a neighbor?
       setValueSentOnFace((sunDim << 4) + (oceanDim), f);
     }
   }
-
+  
+  if (sunDim > 7 & oceanDim > 1 & plantDim < 255) {
+    plantDim = plantDim + 5;
+  }
+  if (sunDim > 7 & oceanDim > 1 & plantDim > 250) {
+    flowerDim = flowerDim + 5;
+  }
   displayLoop();
+  
 }
+
+
 
 byte getSunLevels() {
   sunDim = 0;
@@ -81,15 +94,17 @@ byte getOceanLevels() {
 }
 
 byte getOcean(byte data) {
-    return (data & 2);//returns bits C and D
+    return (data & 3);//returns bits C and D
 }
 
 byte getSun(byte data) {
-    return ((data >> 4) & 2);//returns bits C and D
+    return ((data >> 4) & 15);//returns bits C and D
 }
 
 void displayLoop() {
-  setColor(dim(BLUE, 0));
-  setColorOnFace(dim(BLUE, oceanDim * 64), 0);
-  setColorOnFace(dim(YELLOW, sunDim * 16), 3);
+  setColor(dim(ORANGE, 0));
+  setColorOnFace(dim(BLUE, (oceanDim + 1) * 64 - 1), 0);
+  setColorOnFace(dim(YELLOW, (sunDim + 1) * 16 - 1), 3);
+  setColorOnFace(dim(GREEN, plantDim), 1);
+  setColorOnFace(dim(RED, flowerDim), 2);
 }
