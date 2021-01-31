@@ -1,6 +1,6 @@
 # Perennial Garden
 
-This game is more simulation than game. It runs on a series of blinks.
+This game is more simulation than game. It runs on a series of blinks. To install it, you need blank blink to load it onto.
 
 At the beginning, all tiles are yellowish or white. These tiles fade and grow brighter on a four-second loop to simulate the sun rising and setting. They grow whiter and yellower on a variable 7.8-to-16 second loop to simulate a summer to winter season. 
 
