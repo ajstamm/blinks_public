@@ -57,7 +57,7 @@ void loop() {
   snowSat = sin8_C(pulseMapped);
 
   if (!oceanID) {
-    oceanDim = (oceanDim + getOceanLevels()) / 2.2;
+    oceanDim = (oceanDim + getOceanLevels()) / 2.1;
   } else {
       pulseProgress = millis() % MONTH_LENGTH;
       pulseMapped = map(pulseProgress, 0, MONTH_LENGTH, 0, 255);
