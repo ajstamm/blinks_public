@@ -4,11 +4,20 @@
 byte sunDim = 25; // sun brightness
 byte oceanDim = 0; // ocean brightness
 byte oceanID = false; // am an ocean
+byte oceanHue = 50;
 byte plantHue = 50;
 byte flowerDim = 0;
-byte oceanHue = 50;
-byte flowerHue = 50;
-#define DAY_LENGTH 4000
+byte flowerHue1 = 50;
+byte flowerHue3 = 50;
+byte flowerHue2 = 50;
+byte snowSat = 0;
+
+// sun (day) time = (random(4) + 3) * 1000
+// water (month) time = sun * (random(3) + 3) * (random(3) + 7) / 10
+// snow (season) time = water  * (random(2) + 2) * (random(3) + 7) / 10
+#define DAY_LENGTH    ((random(4) + 3) * 1000)
+#define MONTH_LENGTH  (DAY_LENGTH * (random(3) + 3) * (random(3) + 7) / 10)
+#define SEASON_LENGTH (MONTH_LENGTH  * (random(2) + 2) * (random(3) + 7) / 10)
 
 // SYNCHRONIZED CELEBRATION
 Timer syncTimer;
@@ -28,6 +37,7 @@ byte syncVal = 0;
 // have 1 pip for sun for debugging
 // tie water to be dependent on sun?
 
+
 void setup() {
 }
 
@@ -36,14 +46,24 @@ void loop() {
     oceanID = true;
     oceanDim = 31;
   }
+  // sun rising, then setting, then rising again ...
   int pulseProgress = millis() % DAY_LENGTH;
   byte pulseMapped = map(pulseProgress, 0, DAY_LENGTH, 0, 255);
   sunDim = sin8_C(pulseMapped);
-  
+
+  // summer, then winter, then summer again ...
+  pulseProgress = millis() % SEASON_LENGTH;
+  pulseMapped = map(pulseProgress, 0, SEASON_LENGTH, 0, 255);
+  snowSat = sin8_C(pulseMapped);
+
   if (!oceanID) {
     oceanDim = (oceanDim + getOceanLevels()) / 2.2;
+  } else {
+      pulseProgress = millis() % MONTH_LENGTH;
+      pulseMapped = map(pulseProgress, 0, MONTH_LENGTH, 0, 255);
+      oceanDim = sin8_C(pulseMapped);
   }
-//  oceanHue = map(oceanDim, 0, 31, 50, 160);
+  oceanHue = map(oceanDim, 0, 31, 50, 160);
   plantHue = map(oceanDim, 0, 31, 50, 100);
    
   // run syncLoop to determine sun brightness synced across blinks
@@ -61,7 +81,10 @@ void loop() {
   if (sunDim < 150 & flowerDim > 0) {
     flowerDim = flowerDim - 5;
   }
-  flowerHue  = 50 - map(flowerDim, 0, 255, 0, 50);
+  // tie flowers to plants
+  flowerHue1  = plantHue - map(flowerDim, 0, 255, 0, plantHue);
+  flowerHue2  = plantHue - map(flowerDim, 0, 255, 18, plantHue);
+  flowerHue3  = plantHue - map(flowerDim, 0, 255, 36, plantHue);
   displayLoop();
 }
 
@@ -84,10 +107,18 @@ byte getOcean(byte data) {
 }
 
 void displayLoop() {
-  setColor(makeColorHSB(plantHue, 120, sunDim));
-  setColorOnFace(makeColorHSB(flowerHue, 120, sunDim), 2);
-  setColorOnFace(makeColorHSB(flowerHue, 160, sunDim), 4);
-  setColorOnFace(makeColorHSB(flowerHue, 200, sunDim), 0);
+  setColor(makeColorHSB(plantHue, 255 - snowSat, sunDim));
+  setColorOnFace(makeColorHSB(flowerHue1, 255 - snowSat, sunDim), 2);
+  setColorOnFace(makeColorHSB(flowerHue2, 255 - snowSat, sunDim), 4);
+  setColorOnFace(makeColorHSB(flowerHue3, 255 - snowSat, sunDim), 0);
+  if (snowSat > 100 & flowerHue1 < 40) {
+    setColorOnFace(makeColorHSB(flowerHue1, 255, sunDim), 2);
+    setColorOnFace(makeColorHSB(flowerHue2, 255, sunDim), 4);
+    setColorOnFace(makeColorHSB(flowerHue3, 255, sunDim), 0);    
+  }
+  if (oceanID) {
+    setColorOnFace(makeColorHSB(oceanHue, 255 - (255 - snowSat) / 2 , sunDim), 0);    
+  }
 }
 
 // below copied from puzzle 101
