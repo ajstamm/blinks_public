@@ -1,4 +1,6 @@
-/*  this is more simulation than game
+/*   Abigail Stamm
+ *   GGJ 2021, 31 January 2021
+ *   this is more simulation than game
  */
 
 byte sunDim = 2; // actual sun brightness 2*10+5
@@ -12,15 +14,13 @@ byte flowerHue3 = 50;
 byte flowerHue2 = 50;
 byte snowSat = 0;
 
-
 // synchronization values, from puzzle 101
 Timer syncTimer;
-#define PERIOD_DURATION 6000
-// #define PERIOD_DURATION ((random(2) + 4) * 1000) // throws errors
+#define PERIOD_DURATION 5000
 #define BUFFER_DURATION 100
 byte neighborState[6];
 byte syncVal = 0;
-int dayLength = (random(2) + 4) * 1000;
+int dayLength = 5000; // (random(2) + 4) * 1000;
 int monthLength = dayLength * (random(1) + 2) * (random(3) + 7) / 10;
 int seasonLength = monthLength  * 3 * (random(3) + 7) / 10;
 
@@ -28,13 +28,6 @@ int seasonLength = monthLength  * 3 * (random(3) + 7) / 10;
 // byte sendData = (sunDim << 5) + (oceanDim);
 // << 5 means push data 5 digits left before concatenating
 // & 31 gives the last 5 digits
-
-
-// have a pulse wave that is a fact of life
-// grass dims/grows by itself, with single bit rising/setting
-// have 1 pip for sun for debugging
-// tie water to be dependent on sun?
-
 
 void setup() {
 }
@@ -86,8 +79,8 @@ void loop() {
   }
   // tie flowers to plants, will need to multiply by 10
   flowerHue1  = plantHue - map(flowerDim, 0, 25, 0, plantHue);
-  flowerHue2  = plantHue - map(flowerDim, 0, 25, 15, plantHue);
-  flowerHue3  = plantHue - map(flowerDim, 0, 25, 30, plantHue);
+  flowerHue2  = plantHue - map(flowerDim, 0, 25, 0, plantHue - 15);
+  flowerHue3  = plantHue - map(flowerDim, 0, 25, 0, plantHue - 30);
   displayLoop();
 }
 
