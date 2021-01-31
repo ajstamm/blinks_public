@@ -12,19 +12,17 @@ byte flowerHue3 = 50;
 byte flowerHue2 = 50;
 byte snowSat = 0;
 
-// sun (day) time = (random(4) + 3) * 1000
-// water (month) time = sun * (random(3) + 3) * (random(3) + 7) / 10
-// snow (season) time = water  * (random(2) + 2) * (random(3) + 7) / 10
-#define DAY_LENGTH    ((random(2) + 3) * 1000)
-#define MONTH_LENGTH  (DAY_LENGTH * (random(1) + 2) * (random(3) + 7) / 10)
-#define SEASON_LENGTH (MONTH_LENGTH  * 3 * (random(3) + 7) / 10)
 
-// SYNCHRONIZED CELEBRATION
+// synchronization values, from puzzle 101
 Timer syncTimer;
-#define PERIOD_DURATION 2000
-#define BUFFER_DURATION 200
+#define PERIOD_DURATION 4000
+// #define PERIOD_DURATION ((random(2) + 4) * 1000) // throws errors
+#define BUFFER_DURATION 100
 byte neighborState[6];
 byte syncVal = 0;
+#define DAY_LENGTH    4000 // ((random(2) + 4) * 1000)
+#define MONTH_LENGTH  (DAY_LENGTH * (random(1) + 2) * (random(3) + 7) / 10)
+#define SEASON_LENGTH (MONTH_LENGTH  * 3 * (random(3) + 7) / 10)
 
 // store dimness level 32 water
 // byte sendData = (sunDim << 5) + (oceanDim);
@@ -68,6 +66,7 @@ void loop() {
    
   // run syncLoop to determine sun brightness synced across blinks
   syncLoop();
+//  PERIOD_DURATION = DAY_LENGTH;
   
   FOREACH_FACE(f) {
     if (!isValueReceivedOnFaceExpired(f)) { // is there a neighbor?
@@ -144,11 +143,15 @@ void syncLoop() {
   }
 
   // if our neighbor passed go and we haven't done so within the buffer period, catch up and pass go as well
+  if (didNeighborChange && syncTimer.getRemaining() < PERIOD_DURATION - BUFFER_DURATION) {
+//    DAY_LENGTH = PERIOD_DURATION - BUFFER_DURATION;
+    syncTimer.set(DAY_LENGTH); // aim to pass go in the defined duration
+    syncVal = !syncVal; // change our value everytime we pass go
+  }
+  
   // if we are due to pass go, i.e. timer expired, do so
-  if ( (didNeighborChange && syncTimer.getRemaining() < PERIOD_DURATION - BUFFER_DURATION)
-       || syncTimer.isExpired()
-     ) {
-    syncTimer.set(PERIOD_DURATION); // aim to pass go in the defined duration
+  if ( syncTimer.isExpired() ) {
+    syncTimer.set(DAY_LENGTH); // aim to pass go in the defined duration
     syncVal = !syncVal; // change our value everytime we pass go
   }
 }
