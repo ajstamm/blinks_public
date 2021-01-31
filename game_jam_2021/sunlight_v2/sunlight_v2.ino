@@ -111,7 +111,7 @@ void displayLoop() {
   setColorOnFace(makeColorHSB(flowerHue1, 255 - snowSat, sunDim), 2);
   setColorOnFace(makeColorHSB(flowerHue2, 255 - snowSat, sunDim), 4);
   setColorOnFace(makeColorHSB(flowerHue3, 255 - snowSat, sunDim), 0);
-  if (snowSat > 100) {
+  if (snowSat > 100 & flowerHue1 < 40) {
     setColorOnFace(makeColorHSB(flowerHue2, 255, sunDim), 2);
   }
   if (oceanID) {
