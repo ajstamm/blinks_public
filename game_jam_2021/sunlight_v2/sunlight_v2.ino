@@ -12,13 +12,13 @@
 byte sunDim = 255; // actual sun brightness 
 byte oceanDim = 0; // ocean brightness - for water tiles
 byte oceanID = false; // am an ocean
-byte oceanHue = 50;
-byte plantHue = 50;
-byte flowerDim = 0;
+byte oceanHue = 50; // shade of water
+byte plantHue = 50; // shade of plants
+byte flowerDim = 0; // shade modifier for flowers 1-3
 byte flowerHue1 = 50;
 byte flowerHue3 = 50;
 byte flowerHue2 = 50;
-byte snowSat = 0;
+byte snowSat = 0; // whiteness of tile
 
 // synchronization values, from puzzle 101
 Timer syncTimer;
@@ -34,21 +34,21 @@ void setup() {
 }
 
 void loop() {
-  if (buttonSingleClicked()) {
+  if (buttonSingleClicked()) { // define water tile
     oceanID = true;
     oceanDim = 31;
   }
   // sun rising, then setting, then rising again ...
   int pulseProgress = millis() % dayLength;
   byte pulseMapped = map(pulseProgress, 0, dayLength, 0, 255);
-  sunDim = map(sin8_C(pulseMapped), 0, 255, 100, 255);
+  sunDim = map(sin8_C(pulseMapped), 0, 255, 100, 255); // sunset
 
   // summer, then winter, then summer again ...
   pulseProgress = millis() % seasonLength;
   pulseMapped = map(pulseProgress, 0, seasonLength, 0, 255);
   snowSat = map(sin8_C(pulseMapped), 0, 255, 0, 25);
 
-  if (!oceanID) {
+  if (!oceanID) { // water level in adjacent tiles
     oceanDim = (oceanDim + getOceanLevels()) / 2.1;
   } else {
       pulseProgress = millis() % monthLength;
@@ -58,7 +58,7 @@ void loop() {
   oceanHue = map(oceanDim, 0, 31, 100, 160);
   plantHue = map(oceanDim, 0, 31, 50, 100);
    
-  // run syncLoop to determine sun brightness synced across blinks
+  // run syncLoop to determine sunlight synced across blinks
   syncLoop();
   
   FOREACH_FACE(f) {
@@ -80,7 +80,7 @@ void loop() {
   displayLoop();
 }
 
-
+// check and average neighbors' water levels
 byte getOceanLevels() {
   byte oceanNeighbor = 0;
   byte denom = 0;
