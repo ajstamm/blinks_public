@@ -13,3 +13,8 @@ You can water more than one tile. For best results, use a greater numbers of bli
 # Acknowledgements
 
 Thanks to members of the Blinks Discord for their encouragement, advice, and assistance with debugging and learning the code, especially @Guardian_of_fun and @reluctantpirate.
+
+# Future features?
+
+Turning off water (@gapMindful on Discord)
+
