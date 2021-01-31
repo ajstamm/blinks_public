@@ -10,3 +10,6 @@ The water tile will also share water with its neighbors, but these neighbors wil
 
 You can water more than one tile. For best results, use a greater numbers of blinks and water at least two tiles near an edge or corner. See images in this folder for example tableaus with 18 and 30 blinks. This simulation can run with as few as one blink, but it is less interesting at lower numbers.
 
+# Acknowledgements
+
+Thanks to members of the Blinks Discord for their encouragement, advice, and assistance with debugging and learning the code, especially @Guardian_of_fun and @reluctantpirate.
