@@ -15,9 +15,9 @@ byte snowSat = 0;
 // sun (day) time = (random(4) + 3) * 1000
 // water (month) time = sun * (random(3) + 3) * (random(3) + 7) / 10
 // snow (season) time = water  * (random(2) + 2) * (random(3) + 7) / 10
-#define DAY_LENGTH    ((random(4) + 3) * 1000)
-#define MONTH_LENGTH  (DAY_LENGTH * (random(3) + 3) * (random(3) + 7) / 10)
-#define SEASON_LENGTH (MONTH_LENGTH  * (random(2) + 2) * (random(3) + 7) / 10)
+#define DAY_LENGTH    ((random(2) + 3) * 1000)
+#define MONTH_LENGTH  (DAY_LENGTH * (random(1) + 2) * (random(3) + 7) / 10)
+#define SEASON_LENGTH (MONTH_LENGTH  * 3 * (random(3) + 7) / 10)
 
 // SYNCHRONIZED CELEBRATION
 Timer syncTimer;
