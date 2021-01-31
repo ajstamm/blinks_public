@@ -1,9 +1,9 @@
 /*   Abigail Stamm
  *   GGJ 2021, 31 January 2021
- *   this is more simulation than game
+ *   This is more simulation than game.
  */
 
-byte sunDim = 2; // actual sun brightness 2*10+5
+byte sunDim = 255; // actual sun brightness 
 byte oceanDim = 0; // ocean brightness
 byte oceanID = false; // am an ocean
 byte oceanHue = 50;
@@ -16,18 +16,13 @@ byte snowSat = 0;
 
 // synchronization values, from puzzle 101
 Timer syncTimer;
-#define PERIOD_DURATION 5000
-#define BUFFER_DURATION 100
+#define PERIOD_DURATION 8000
+#define BUFFER_DURATION 400
 byte neighborState[6];
 byte syncVal = 0;
-int dayLength = 5000; // (random(2) + 4) * 1000;
-int monthLength = dayLength * (random(1) + 2) * (random(3) + 7) / 10;
-int seasonLength = monthLength  * 3 * (random(3) + 7) / 10;
-
-// store dimness level 32 water
-// byte sendData = (sunDim << 5) + (oceanDim);
-// << 5 means push data 5 digits left before concatenating
-// & 31 gives the last 5 digits
+int dayLength = 8000; // (random(2) + 4) * 1000;
+int monthLength = dayLength * 2 * (random(3) + 7) / 10;
+int seasonLength = monthLength * 2 * (random(3) + 7) / 10;
 
 void setup() {
 }
@@ -40,25 +35,20 @@ void loop() {
   // sun rising, then setting, then rising again ...
   int pulseProgress = millis() % dayLength;
   byte pulseMapped = map(pulseProgress, 0, dayLength, 0, 255);
-  // force to range 10 to 25
   sunDim = map(sin8_C(pulseMapped), 0, 255, 100, 255);
 
   // summer, then winter, then summer again ...
   pulseProgress = millis() % seasonLength;
   pulseMapped = map(pulseProgress, 0, seasonLength, 0, 255);
-  snowSat = sin8_C(pulseMapped);
-  // force range to 0-25
-  snowSat = (snowSat - 5) / 25;
+  snowSat = map(sin8_C(pulseMapped), 0, 255, 0, 25);
 
   if (!oceanID) {
     oceanDim = (oceanDim + getOceanLevels()) / 2.1;
   } else {
       pulseProgress = millis() % monthLength;
-      pulseMapped = map(pulseProgress, 0, monthLength, 0, 31);
-    // force into 0-31 range
+      pulseMapped = map(pulseProgress, 0, monthLength, 0, 31); // force into 0-31 range
       oceanDim = sin8_C(pulseMapped);
   }
-  // force ranges to one tenth of value
   oceanHue = map(oceanDim, 0, 31, 100, 160);
   plantHue = map(oceanDim, 0, 31, 50, 100);
    
@@ -103,21 +93,20 @@ byte getOcean(byte data) {
 }
 
 void displayLoop() {
-//  setColor(makeColorHSB(plantHue * 10, 255 - (snowSat * 25 + 5), sunDim));
   if (oceanID) {
-    setColorOnFace(dim(makeColorHSB(oceanHue, 255 - (255 - (snowSat * 25 + 5)) / 2, 255), sunDim), 0);    
+    setColorOnFace(makeColorHSB(oceanHue, 255 - (255 + (snowSat * 10)) / 2, sunDim), 0);    
   } else {
-    setColorOnFace(dim(makeColorHSB(flowerHue3, 255 - (snowSat * 25 + 5), 255), sunDim), 0);
+    setColorOnFace(makeColorHSB(flowerHue3, 255 - (snowSat * 10), sunDim), 0);
   }
-  setColorOnFace(dim(makeColorHSB(plantHue, 255 - (snowSat * 25 + 5), 255), sunDim), 1);
+  setColorOnFace(makeColorHSB(plantHue, 255 - (snowSat * 10), sunDim), 1);
   if (snowSat > 4 & flowerHue1 < 4) {
     setColorOnFace(dim(makeColorHSB(flowerHue2, 155, 255), sunDim), 2);
   } else {
-    setColorOnFace(dim(makeColorHSB(flowerHue1, 255 - (snowSat * 25 + 5), 255), sunDim), 2);
+    setColorOnFace(dim(makeColorHSB(flowerHue1, 255 - (snowSat * 10), 255), sunDim), 2);
   }  
-  setColorOnFace(dim(makeColorHSB(plantHue, 255 - (snowSat * 25 + 5), 255), sunDim), 3);
-  setColorOnFace(dim(makeColorHSB(flowerHue2, 255 - (snowSat * 25 + 5), 255), sunDim), 4);
-  setColorOnFace(dim(makeColorHSB(plantHue, 255 - (snowSat * 25 + 5), 255), sunDim), 5);
+  setColorOnFace(dim(makeColorHSB(plantHue, 255 - (snowSat * 10), 255), sunDim), 3);
+  setColorOnFace(dim(makeColorHSB(flowerHue2, 255 - (snowSat * 10), 255), sunDim), 4);
+  setColorOnFace(dim(makeColorHSB(plantHue, 255 - (snowSat * 10), 255), sunDim), 5);
 //  setColorOnFace(MAGENTA, 5); // doesn't flicker
 }
 
@@ -146,13 +135,9 @@ void syncLoop() {
   }
 
   // if our neighbor passed go and we haven't done so within the buffer period, catch up and pass go as well
-  if (didNeighborChange && syncTimer.getRemaining() < PERIOD_DURATION - BUFFER_DURATION) {
-    syncTimer.set(PERIOD_DURATION); // aim to pass go in the defined duration
-    syncVal = !syncVal; // change our value everytime we pass go
-  }
-  
   // if we are due to pass go, i.e. timer expired, do so
-  if ( syncTimer.isExpired() ) {
+  if ((didNeighborChange && syncTimer.getRemaining() < PERIOD_DURATION - BUFFER_DURATION) ||
+      syncTimer.isExpired()) {
     syncTimer.set(PERIOD_DURATION); // aim to pass go in the defined duration
     syncVal = !syncVal; // change our value everytime we pass go
   }
