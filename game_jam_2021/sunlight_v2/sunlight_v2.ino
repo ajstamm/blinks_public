@@ -15,12 +15,12 @@ byte snowSat = 0;
 
 // synchronization values, from puzzle 101
 Timer syncTimer;
-#define PERIOD_DURATION 4000
+#define PERIOD_DURATION 6000
 // #define PERIOD_DURATION ((random(2) + 4) * 1000) // throws errors
 #define BUFFER_DURATION 100
 byte neighborState[6];
 byte syncVal = 0;
-#define DAY_LENGTH    4000 // ((random(2) + 4) * 1000)
+#define DAY_LENGTH    6000 // ((random(2) + 4) * 1000)
 #define MONTH_LENGTH  (DAY_LENGTH * (random(1) + 2) * (random(3) + 7) / 10)
 #define SEASON_LENGTH (MONTH_LENGTH  * 3 * (random(3) + 7) / 10)
 
@@ -47,7 +47,7 @@ void loop() {
   // sun rising, then setting, then rising again ...
   int pulseProgress = millis() % DAY_LENGTH;
   byte pulseMapped = map(pulseProgress, 0, DAY_LENGTH, 0, 255);
-  sunDim = sin8_C(pulseMapped);
+  sunDim = map(sin8_C(pulseMapped), 0, 255, 100, 255);
 
   // summer, then winter, then summer again ...
   pulseProgress = millis() % SEASON_LENGTH;
@@ -105,19 +105,41 @@ byte getOcean(byte data) {
     return (data & 31); // returns bits 2 to 6
 }
 
-void displayLoop() {
-  setColor(makeColorHSB(plantHue, 255 - snowSat, sunDim));
-  setColorOnFace(makeColorHSB(flowerHue1, 255 - snowSat, sunDim), 2);
-  setColorOnFace(makeColorHSB(flowerHue2, 255 - snowSat, sunDim), 4);
-  setColorOnFace(makeColorHSB(flowerHue3, 255 - snowSat, sunDim), 0);
-  if (snowSat > 100 & flowerHue1 < 40) {
-    setColorOnFace(makeColorHSB(flowerHue2, 255, sunDim), 2);
-  }
+void displayLoopTemp() {
+//  setColor(makeColorHSB(plantHue, 255 - snowSat, sunDim));
   if (oceanID) {
-    setColorOnFace(makeColorHSB(oceanHue, 255 - (255 - snowSat) / 2 , sunDim), 0);    
+    setColorOnFace(dim(makeColorHSB(oceanHue, 255 - (255 - snowSat) / 2, 255), sunDim), 0);    
+  } else {
+    setColorOnFace(dim(makeColorHSB(flowerHue3, 255 - snowSat, 255), sunDim), 0);
   }
+  setColorOnFace(dim(makeColorHSB(plantHue, 255 - snowSat, 255), sunDim), 1);
+  if (snowSat > 100 & flowerHue1 < 40) {
+    setColorOnFace(dim(makeColorHSB(flowerHue2, 155, 255), sunDim), 2);
+  } else {
+    setColorOnFace(dim(makeColorHSB(flowerHue1, 255 - snowSat, 255), sunDim), 2);
+  }  
+  setColorOnFace(dim(makeColorHSB(plantHue, 255 - snowSat, 255), sunDim), 3);
+  setColorOnFace(dim(makeColorHSB(flowerHue2, 255 - snowSat, 255), sunDim), 4);
+  setColorOnFace(dim(makeColorHSB(plantHue, 255 - snowSat, 255), sunDim), 5);
 }
 
+void displayLoop() {
+//  setColor(makeColorHSB(plantHue, 255 - snowSat, sunDim));
+  if (oceanID) {
+    setColorOnFace(makeColorHSB(oceanHue, 255 - (255 - snowSat) / 2, 255), 0);    
+  } else {
+    setColorOnFace(makeColorHSB(flowerHue3, 255 - snowSat, 255), 0);
+  }
+  setColorOnFace(makeColorHSB(plantHue, 255 - snowSat, 255), 1);
+  if (snowSat > 100 & flowerHue1 < 40) {
+    setColorOnFace(makeColorHSB(flowerHue2, 155, 255), 2);
+  } else {
+    setColorOnFace(makeColorHSB(flowerHue1, 255 - snowSat, 255), 2);
+  }  
+  setColorOnFace(makeColorHSB(plantHue, 255 - snowSat, 255), 3);
+  setColorOnFace(makeColorHSB(flowerHue2, 255 - snowSat, 255), 4);
+  setColorOnFace(makeColorHSB(plantHue, 255 - snowSat, 255), 5);
+}
 // below copied from puzzle 101
 byte getSyncVal(byte data) {
   return (data >> 5) & 1;
