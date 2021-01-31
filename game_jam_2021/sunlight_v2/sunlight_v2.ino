@@ -1,10 +1,16 @@
 /*   Abigail Stamm
- *   GGJ 2021, 31 January 2021
- *   This is more simulation than game.
+ *   GGJ 2021, 30-31 January 2021
+ *   
+ *   This is more simulation than game. To play, load the game onto any number of blinks. 
+ *   When the program is done loading, click one blink to designate it a water source and 
+ *   wait as flowers begin to grow. If you want more flowers, add more water sources.
+ *   
+ *   Both the water table and the seasons fluctuate on loops of up to 16 seconds, so be 
+ *   patient before watering more than 1/6 of your tiles.
  */
 
 byte sunDim = 255; // actual sun brightness 
-byte oceanDim = 0; // ocean brightness
+byte oceanDim = 0; // ocean brightness - for water tiles
 byte oceanID = false; // am an ocean
 byte oceanHue = 50;
 byte plantHue = 50;
