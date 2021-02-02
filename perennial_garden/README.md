@@ -1,6 +1,6 @@
 # Perennial Garden
 
-This game was conceived and created during Global Game Jam 2021. It is more simulation than game. 
+The precursor of this game was conceived and created during Global Game Jam 2021. It is more simulation than game. 
 
 This game runs on a series of blinks. To install it, you need blank blink to load it onto. To learn more about the Blinks game platform, click [here](https://move38.com/). If you do not own any blinks, you can run this game using Blinks' online simulator [here](https://move38.github.io/Blinks-Simulator/).
 
@@ -12,10 +12,9 @@ The water tile will also share water with its neighbors, but these neighbors wil
 
 You can water more than one tile. For best results, use a greater numbers of blinks and water at least two tiles near an edge or corner. See images in this folder for example tableaus with 18 and 30 blinks. This simulation can run with as few as one blink, but it is less interesting at lower numbers.
 
+If you water too many tiles, click a water tile again to turn off the water. That tile's water will immediately recede and over time, the water in the surrounding tiles will also recede.
+
 # Acknowledgements
 
-Thanks to members of the Blinks Discord for their encouragement, advice, and assistance with debugging and learning the code, especially @Guardian_of_fun and @reluctantpirate.
+Thanks to members of the Blinks Discord for their encouragement, advice, and assistance with debugging and learning the code, especially @Guardian_of_fun and @reluctantpirate. Thanks to @gapMindful for suggesting a way to turn off water.
 
-# Update
-
-A revised version of this game that allows you to turn off water is [here](). This feature was requested by @gapMindful on Discord.
