@@ -1,6 +1,6 @@
 # Perennial Garden
 
-The precursor of this game, Sunlight, was conceived and created during Global Game Jam 2021. This is designed as a simulation rather than a game. 
+The precursor of this game, [Sunlight](https://github.com/ajstamm/blinks_public/tree/main/game_jam_2021/sunlight_v2), was conceived and created during Global Game Jam 2021. This is designed as a simulation rather than a game. 
 
 This game runs on a series of Blinks, a game platform produced by [Move38](https://github.com/Move38). To install it, you need blank Blink to load it onto. To learn more about the Blinks game platform, click [here](https://move38.com/). If you do not own any Blinks, you can run this game using the Blinks online simulator [here](https://move38.github.io/Blinks-Simulator/).
 
