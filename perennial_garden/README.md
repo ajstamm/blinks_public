@@ -2,7 +2,7 @@
 
 The precursor of this game was conceived and created during Global Game Jam 2021. It is more simulation than game. 
 
-This game runs on a series of blinks, a game platform produced by @Move38. To install it, you need blank blink to load it onto. To learn more about the Blinks game platform, click [here](https://move38.com/). If you do not own any blinks, you can run this game using Blinks' online simulator [here](https://move38.github.io/Blinks-Simulator/).
+This game runs on a series of blinks, a game platform produced by [Move38](https://github.com/Move38). To install it, you need blank blink to load it onto. To learn more about the Blinks game platform, click [here](https://move38.com/). If you do not own any blinks, you can run this game using Blinks' online simulator [here](https://move38.github.io/Blinks-Simulator/).
 
 At the beginning of the game, all tiles are yellowish or white. These tiles fade and grow brighter on a four-second loop to simulate the sun rising and setting. They grow whiter and yellower on a variable 7.8-to-16 second loop to simulate a summer to winter season. 
 
@@ -16,5 +16,5 @@ If you water too many tiles, click a water tile again to turn off the water. Tha
 
 # Acknowledgements
 
-Thanks to members of the Blinks Discord for their encouragement, advice, and assistance with debugging and learning the code, especially @Guardian-of-fun and @ReluctantPirate. Thanks to @RunDotGames for suggesting a way to turn off water.
+Thanks to members of the Blinks Discord for their encouragement, advice, and assistance with debugging and learning the code, especially [Guardian-of-fun](https://github.com/Guardian-of-fun) and [ReluctantPirate](https://github.com/ReluctantPirate). Thanks to [RunDotGames](https://github.com/RunDotGames) for suggesting a way to turn off water.
 
