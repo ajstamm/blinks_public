@@ -40,9 +40,7 @@ void loop() {
     isWater = !isWater;
     if (isWater) {
       waterDim = 31;
-    } else {
-      waterDim = 0;
-    }
+    } 
   }
   // sun rising, then setting, then rising again ...
   int pulseProgress = millis() % dayLength;
@@ -76,7 +74,7 @@ void loop() {
   if (sunDim > 200 & plantHue > 75 & flowerDim < 25) {
     flowerDim = flowerDim + 1;
   }
-  if (sunDim < 150 & flowerDim > 0) {
+  if (sunDim < 175 & flowerDim > 0) {
     flowerDim = flowerDim - 1;
   }
   // tie flowers to plants, will need to multiply by 10

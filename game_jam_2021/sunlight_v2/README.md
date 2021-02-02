@@ -1,4 +1,4 @@
-# Perennial Garden
+# Perennial Garden (formerly Sunlight)
 
 This game was conceived and created during Global Game Jam 2021. It is more simulation than game. 
 
@@ -18,5 +18,5 @@ Thanks to members of the Blinks Discord for their encouragement, advice, and ass
 
 # Update
 
-A revised version of this game that allows you to turn off water is [here](). This feature was requested by @gapMindful on Discord.
+A revised version of this game that allows you to turn off water is [here](https://github.com/ajstamm/blinks_public/tree/main/perennial_garden). This feature was requested by @gapMindful on Discord.
 
