@@ -74,7 +74,8 @@ void loop() {
   if (sunDim > 200 & plantHue > 75 & flowerDim < 25) {
     flowerDim = flowerDim + 1;
   }
-  if (sunDim < 175 & flowerDim > 0) {
+  // flowers dim at night or if insufficient water
+  if ((sunDim < 175 | plantHue == 50) & flowerDim > 0) {
     flowerDim = flowerDim - 1;
   }
   // tie flowers to plants, will need to multiply by 10
