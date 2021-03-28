@@ -1,0 +1,27 @@
+Hill defender
+Blinks game based on Eiyo by Thungdergryph Games
+Mechanisms based somewhat on Pans Labyrinth by Guardian of Fun
+28 March 2021
+
+Single-player, 6 blinks
+
+Start: Connect all blinks. Double click 1 blink to designate player army and set enemy armies. Separate blinks.
+
+Player army: 1 blink with 5 bright triangles
+Enemy armies: 5 blinks with 1 bright triangle, 1 50% triangle, and 4 25% triangles
+
+Armies are randomly assigned 4 colors. Player army colors change randomly each round. Enemy armies are assigned ther colors at the start; these colors are visible in order around the blink (full brightness = current army, 50% = next army, rest are remaining armies in order). 
+
+Each skirmish: Player attaches 1 to 4 enemy blinks (bright side) to soldiers on their army blink, then single clicks. 
+	1. For each matching pair, player gains 2 points and both armies reset.
+	2. For non-matching pairs, player gains 0 points and only enemy resets.
+	3. For unattached soldier, player loses 2 points and soldier resets.
+
+Each enemy blink can skirmish 6 times. Player blink has unlimited skirmishes until 30 enemy soldiers are confronted (outcome 1 or 2 above).
+
+Win conditions: 
+	50+ points: gold crown (spinning lights)
+	40+ points: silver (white) crown 
+	30+ points: bronze (orange) crown
+	below 30 points: red pulse (player lost)
+
